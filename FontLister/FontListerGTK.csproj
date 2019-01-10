@@ -63,7 +63,6 @@
     <Compile Include="Src\Host.cs" />
     <Compile Include="Src\ProgramOSX.cs" />
     <Compile Include="Src\ProgramWL.cs" />
-    <Compile Include="Src\Window.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.FontListerGTK.config" />

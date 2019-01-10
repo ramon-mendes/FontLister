@@ -19,13 +19,20 @@ namespace FontLister
 	static class App
 	{
 		private static SciterMessages sm = new SciterMessages();
-		public static Window AppWnd { get; private set; }
+		public static SciterWindow AppWnd { get; private set; }
 		public static Host AppHost { get; private set; }
 
 		public static void Run()
 		{
-			// Create the window
-			AppWnd = new Window();
+			AppWnd = new SciterWindow();
+
+			var wnd = AppWnd;
+			wnd.CreateMainWindow(800, 600);
+			wnd.CenterTopLevelWindow();
+			wnd.Title = "FontLister";
+#if WINDOWS
+			wnd.Icon = Properties.Resources.IconMain;
+#endif
 
 			// Prepares SciterHost and then load the page
 			AppHost = new Host(AppWnd);

@@ -16,10 +16,12 @@ namespace FontLister
 	{
 		public Host(SciterWindow wnd)
 		{
+			// Prepares SciterHost and then load the page
 			var host = this;
 			host.Setup(wnd);
 			host.AttachEvh(new HostEvh());
 			host.SetupPage("index.html");
+			//host.DebugInspect();// >-- call it after SetupPage(), dont forget to run inspector.exe 
 			wnd.Show();
 		}
 
@@ -30,31 +32,39 @@ namespace FontLister
 
 	class HostEvh : SciterEventHandler
 	{
-		public void Host_DownloadFont(SciterValue[] args)
+		protected override bool OnScriptCall(SciterElement se, string name, SciterValue[] args, out SciterValue result)
 		{
-			string savefolder = args[0].Get("");
-			string family = args[1].Get("");
-			SciterValue async_cbk = args[2];
-			string str = async_cbk.ToString();
-
-			Task.Run(() =>
+			result = null;
+			switch(name)
 			{
-				bool res;
-				try
-				{
-					GAPI.DownloadFont(family, savefolder);
-					res = true;
-				}
-				catch(Exception)
-				{
-					res = false;
-				}
+				case "Host_DownloadFont":
+					string savefolder = args[0].Get("");
+					string family = args[1].Get("");
+					SciterValue async_cbk = args[2];
+					string str = async_cbk.ToString();
 
-				App.AppHost.InvokePost(() =>
-				{
-					async_cbk.Call(new SciterValue(res));
-				});
-			});
+					Task.Run(() =>
+					{
+						bool res;
+						try
+						{
+							GAPI.DownloadFont(family, savefolder);
+							res = true;
+						}
+						catch(Exception)
+						{
+							res = false;
+						}
+
+						App.AppHost.InvokePost(() =>
+						{
+							async_cbk.Call(new SciterValue(res));
+						});
+					});
+
+					return true;
+			}
+			return false;
 		}
 	}
 

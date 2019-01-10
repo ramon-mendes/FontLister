@@ -30,7 +30,7 @@ namespace FontLister
 	class AppDelegate : NSApplicationDelegate
 	{
 		static readonly SciterMessages sm = new SciterMessages();
-		public static Window AppWindow { get; private set; }
+		public static SciterWindow AppWindow { get; private set; }
 		public static Host AppHost { get; private set; }
 
 		public override void DidFinishLaunching(NSNotification notification)

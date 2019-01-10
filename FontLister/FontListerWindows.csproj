@@ -107,7 +107,6 @@
     <Compile Include="Src\Mono.cs" />
     <Compile Include="Src\ProgramOSX.cs" />
     <Compile Include="Src\ProgramWL.cs" />
-    <Compile Include="Src\Window.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
