@@ -1,0 +1,67 @@
+<!-- OmniView:on -->
+<html>
+<head>
+	<style>
+		body
+		{
+			margin: 0;
+			padding: 10px;
+			flow: vertical;
+			background: #eee;
+			font-family: system;
+		}
+
+		li
+		{
+			padding: 10px;
+			margin-bottom: 10px;
+			border: solid 1px #BBB;
+			box-shadow: 0px 1px 1px #EEE;
+			background: white;
+		}
+
+		h1 { margin: 0; margin-bottom: 10px; }
+
+		b { font-size: 18px; }
+		b.success { color: green; }
+		b.error { color: red; }
+	</style>
+
+	<script type="text/tiscript">
+		function View_OnFontList(data)
+		{
+			$(.warning).remove();
+			
+			for(var item in data)
+			{
+				var el_item = self#list.$append(<li><h1>{item.family}</h1><button>Download Font Family</button></li>);
+				el_item.family = item.family;
+			}
+		}
+
+		self.on("click", "button", function() {
+			var el_btn = this;
+			var folder = view.selectFolder();
+			if(folder)
+			{
+				el_btn.state.disabled = true;
+				el_btn.text = "Downloading..";
+
+				var family = el_btn.$p(li).family;
+				view.Host_DownloadFont(folder, family, function(res) {
+					if(res)
+						el_btn.$after(<b .success>Download completed with success!</b>);
+					else
+						el_btn.$after(<b .error>Error downloading!</b>);
+					el_btn.remove();
+				});
+			}
+		});
+	</script>
+</head>
+
+<body>
+	<div .warning>Loading Google fonts..</div>
+	<div #list />
+</body>
+</html>
